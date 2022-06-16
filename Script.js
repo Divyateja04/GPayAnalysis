@@ -15,14 +15,18 @@ class Payment{
     constructor(line){
         let paymentDetails = line.split("<br>")[0];
         let dateDetails = line.split("<br>")[1];
+        if(paymentDetails.split("using Bank Account")[1]){
+            paymentDetails = paymentDetails.split(" gitusing Bank Account")[0];
+        }
+
         this.type = paymentDetails.split(" ")[0];
         this.amount = paymentDetails.split(" ")[1].split("₹")[1];
         this.date = dateDetails.split(", ")[0];
-        this.paymentInfo = paymentDetails;
+        this.info = paymentDetails;
     }
 }
 
-fs.readFile('Google Pay/My Activity/My Activity.html', (err, data) => {
+fs.readFile('Takeout/Google Pay/My Activity/My Activity.html', (err, data) => {
     data.toString()
     .split(`</style></head><body><div class="mdl-grid"><div class="outer-cell mdl-cell mdl-cell--12-col mdl-shadow--2dp"><div class="mdl-grid"><div class="header-cell mdl-cell mdl-cell--12-col">`)[1]
     .split('<p class="mdl-typography--title">Google Pay<br></p></div><div class="content-cell mdl-cell mdl-cell--6-col mdl-typography--body-1">')
@@ -50,7 +54,8 @@ fs.readFile('Google Pay/My Activity/My Activity.html', (err, data) => {
         }
     })
 
-    console.log("Payment Analysis for " + Month)
+    console.log("Payment Analysis for " + Month);
+    console.log("Using filter " + fil1);
     console.log("Paid: ₹" + paid, "Received: ₹" + received);
 
 })
